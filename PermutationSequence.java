@@ -2,28 +2,31 @@ import java.util.*;
 
 public class PermutationSequence {
     public String getPermutation(int n, int k) {
-        int[] s = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        boolean hasRemove[] = new boolean[9];
-        int times = 1, num, complement = k;
+        return res(n, k - 1);
+    }
+
+    public String res(int n, int k){
+        List<Integer> list = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        int times, num, complement = k;
         StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= n; ++i) {
             if (i == n) {
-                for (int p = 0; p < hasRemove.length; ++p) {
-                    if (!hasRemove[p]) {
-                        sb.append(s[p]);
-                        return sb.toString();
-                    }
-                }
+                sb.append(list.get(0));
+                return sb.toString();
             }
-            times = multiple(n - i);
-            num = k / times;
-            while (hasRemove[num]) {
-                num++;
-            }
-            hasRemove[num] = true;
-            sb.append(s[num]);
-            k = complement % times;
 
+            times = (multiple(n - i));
+            num = complement / times;
+            if (i != 1) {
+                complement = complement % times;
+            }
+
+
+            if (num >= n - i + 1) {
+                num = num % (n - i + 1);
+            }
+            sb.append(list.get(num));
+            list.remove((int) (num));
         }
 
         return sb.toString();
