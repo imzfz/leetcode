@@ -27,4 +27,40 @@ public class MaximalSquare {
         }
         return true;
     }
+
+    //// dp[i][j] = min(dp[i-1][j], dp[i-1][j-1], dp[i][j-1]) + 1
+    public int maximalSquareDP(char[][] matrix) {
+        if(matrix.length == 0) return 0;
+
+        int r = matrix.length;
+        int c = matrix[0].length;
+        int[][] dp = new int[r][c];
+        int res = 0;
+        // 初始化dp数组
+        for(int i = 0; i < r; i++) {
+            dp[i][0] = matrix[i][0] == '0' ? 0 : 1;
+            res = dp[i][0] > res ? dp[i][0] : res;
+        }
+
+        for(int i = 0; i < c; i++) {
+            dp[0][i] = matrix[0][i] == '0' ? 0 : 1;
+            res = dp[0][i] > res ? dp[0][i] : res;
+        }
+
+        for(int i = 1; i < r; i++) {
+            for(int j = 1; j < c; j++) {
+                if(matrix[i][j] == '1'){
+                    dp[i][j] = min(dp[i-1][j], dp[i-1][j-1], dp[i][j-1]) + 1;
+                    res = dp[i][j] > res ? dp[i][j] : res;
+                }
+            }
+        }
+        return res * res;
+    }
+
+    public int min(int a, int b, int c) {
+        if(a <= b && a <= c)return a;
+        if(b <= a && b <= c)return b;
+        return c;
+    }
 }
