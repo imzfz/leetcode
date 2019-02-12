@@ -18,4 +18,19 @@ public class MaximumSubarray {
         }
         return res;
     }
+
+    public int maxSubArrayDP(int[] nums) {
+        int[] dpArray = new int[nums.length];
+        dpArray[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            dpArray[i] = Math.max(dpArray[i - 1] + nums[i], nums[i]);
+        }
+        int sum = dpArray[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (dpArray[i] > sum) {
+                sum = dpArray[i];
+            }
+        }
+        return sum;
+    }
 }
