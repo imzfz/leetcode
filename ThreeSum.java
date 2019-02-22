@@ -16,8 +16,13 @@ public class ThreeSum {
             return new ArrayList<>();
         }
 
+        if(line + 1 < nums.length && line + 2 < nums.length
+                && nums[line] == 0 && nums[line + 1] == 0 && nums[line + 2] == 0){
+            list.add(Arrays.asList(nums[line], nums[line + 1], nums[line + 2]));
+        }
+
         for(int i = 0; i < line + 1; i++){
-            for(int j = line + 1; j < nums.length; j++){
+            for(int j = line; j < nums.length; j++){
                 int twoSum = nums[i] + nums[j];
                 List<Integer> addList;
                 if(twoSum > 0){
@@ -30,7 +35,7 @@ public class ThreeSum {
 
                 }
                 else if(twoSum == 0){
-                    if(nums[line + 1] == 0){
+                    if(i != line && nums[line + 1] == 0){
                         addList = Arrays.asList(nums[i], nums[j], nums[line + 1]);
                         Collections.sort(addList);
                         list.add(addList);
@@ -47,6 +52,22 @@ public class ThreeSum {
                 }
             }
         }
+        list.sort((o1, o2) -> {
+            if(o1.get(0).compareTo(o2.get(0)) == 0){
+                if(o1.get(1).compareTo(o2.get(1)) == 0){
+                    if(o1.get(2).compareTo(o2.get(2)) == 0){
+                        return 0;
+                    }
+                    else {
+                        return o1.get(2).compareTo(o2.get(2));
+                    }
+                }
+                else {
+                    return o1.get(1).compareTo(o2.get(1));
+                }
+            }
+            return o1.get(0).compareTo(o2.get(0));
+        });
         list = isDuplicate(list);
         return list;
     }
@@ -67,7 +88,7 @@ public class ThreeSum {
                 continue;
             }
             else{
-                if(a != next.get(0)){
+                if(!(a == next.get(0) && b == next.get(1) && c == next.get(2))){
                     a = next.get(0);
                     b = next.get(1);
                     c = next.get(2);
@@ -93,14 +114,14 @@ public class ThreeSum {
         while (start <= end){
             middle = (start + end) >> 1;
             if(nums[middle] >= 0){
-                if(middle - 1 >= 0 && nums[middle - 1] < 0){
-                    return middle - 1;
+                if(middle == 0 || (middle - 1 >= 0 && nums[middle - 1] < 0)){
+                    return middle;
                 }
                 end = middle - 1;
             }
             else {
                 if(middle + 1 < nums.length && nums[middle + 1] >= 0){
-                    return middle;
+                    return middle + 1;
                 }
                 start = middle + 1;
             }
